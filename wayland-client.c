@@ -112,6 +112,7 @@ static void wl_surface_frame_done(void *data, struct wl_callback *cb, uint32_t t
 
 	// Request another frame
 	struct client_state *state = data;
+	// Register a callback for the new frame
 	cb = wl_surface_frame(state->wl_surface);
 	wl_callback_add_listener(cb, &wl_surface_frame_listener, state);
 
@@ -150,8 +151,9 @@ int main(int argc, char *argv[]) {
 
 	state.xdg_toplevel = xdg_surface_get_toplevel(state.xdg_surface);
 	wl_surface_commit(state.wl_surface);
-	// Register a frame callback
+	// Register a callback for the current frame
 	struct wl_callback *cb = wl_surface_frame(state.wl_surface);
+	// Add a listener for the callback of the current frame
 	wl_callback_add_listener(cb, &wl_surface_frame_listener, &state);
 	while (wl_display_dispatch(state.wl_display)) {
 		// This line was left in blank
