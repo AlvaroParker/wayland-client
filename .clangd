@@ -2,4 +2,4 @@ CompileFlags:
   Add:
     - "-I/usr/include/wlroots-0.18"
     - "-I/usr/include/pixman-1"
-    - "-I./"
+    - "-I./include"
