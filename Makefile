@@ -22,8 +22,10 @@ all: tnwlserver
 $(INCLUDE_DIR)/xdg-shell-protocol.h:
 	$(WAYLAND_SCANNER) server-header $(WAYLAND_PROTOCOLS)/stable/xdg-shell/xdg-shell.xml $@
 
+$(SRC_DIR)/xdg-shell-protocol.c:
+	$(WAYLAND_SCANNER) private-code $(WAYLAND_PROTOCOLS)/stable/xdg-shell/xdg-shell.xml $@
 
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(INCLUDE_DIR)/xdg-shell-protocol.h
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(INCLUDE_DIR)/xdg-shell-protocol.h $(SRC_DIR)/xdg-shell-protocol.c
 	@mkdir -p $(BUILD_DIR)
 	$(CC) -c $< $(CFLAGS) -I./$(INCLUDE_DIR) -o $@
 
