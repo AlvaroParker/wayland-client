@@ -8,7 +8,7 @@ CFLAGS_PKG_CONFIG!=$(PKG_CONFIG) --cflags $(PKGS)
 CFLAGS+=$(CFLAGS_PKG_CONFIG)
 LIBS!=$(PKG_CONFIG) --libs $(PKGS)
 
-all: tinywl
+all: tnwlserver
 
 # wayland-scanner is a tool which generates C headers and rigging for Wayland
 # protocols, which are specified in XML. wlroots requires you to rig these up
@@ -16,13 +16,13 @@ all: tinywl
 xdg-shell-protocol.h:
 	$(WAYLAND_SCANNER) server-header $(WAYLAND_PROTOCOLS)/stable/xdg-shell/xdg-shell.xml $@
 
-tinywl.o: tinywl.c xdg-shell-protocol.h
+build/main.o: src/*.c xdg-shell-protocol.h
 	$(CC) -c $< -g -Werror $(CFLAGS) -I. -DWLR_USE_UNSTABLE -o $@
-tinywl: tinywl.o
+tnwlserver: build/*.o
 	$(CC) $^ $> -g -Werror $(CFLAGS) $(LDFLAGS) $(LIBS) -o $@
 
-clean:
-	rm -f tinywl tinywl.o xdg-shell-protocol.h
+	#clean:
+	#rm -f tinywl tinywl.o xdg-shell-protocol.h
 
 LIBS_CLIENT=-lwayland-client -lrt
 client: wayland-client.c xdg-shell-protocol.c pool.c
